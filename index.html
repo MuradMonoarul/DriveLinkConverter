@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Murad Drive Link Converter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0a0c10;
+            --card-bg: #121620;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --accent: #00f2fe;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border: #22293f;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Ambient Background Elements */
+        .bg-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            top: -200px;
+            left: -200px;
+            z-index: -1;
+            pointer-events: none;
+            animation: floatGlow 12s infinite alternate ease-in-out;
+        }
+
+        .bg-glow-2 {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+            bottom: -100px;
+            right: -100px;
+            z-index: -1;
+            pointer-events: none;
+            animation: floatGlow 16s infinite alternate-reverse ease-in-out;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(80px, 50px) scale(1.1); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Core Layout Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Animated Landing Section */
+        .hero {
+            min-height: 75vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px;
+            position: relative;
+        }
+
+        .hero-card {
+            background: linear-gradient(135deg, rgba(18, 22, 32, 0.8), rgba(10, 12, 16, 0.9));
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            max-width: 800px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        .hero-img-wrapper {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .hero-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 24px;
+            object-fit: cover;
+            border: 2px solid var(--border);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        }
+
+        .hero-img-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 28px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            z-index: -1;
+            opacity: 0.8;
+            animation: pulseGlow 3s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.6; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1.02); }
+        }
+
+        .hero-info {
+            flex-grow: 1;
+        }
+
+        .animated-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .animated-title span {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .hero-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .scroll-down-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            margin-top: 25px;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s forwards;
+        }
+
+        .scroll-down-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Converter Dashboard Card */
+        .converter-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            margin-bottom: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .converter-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .form-group {
+            margin-bottom: 28px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+
+        /* File Type Selector Cards */
+        .type-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .type-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .type-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        .type-card.active {
+            background: rgba(99, 102, 241, 0.08);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.15);
+        }
+
+        .type-card input[type="radio"] {
+            display: none;
+        }
+
+        .type-icon {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            transition: color 0.25s ease;
+        }
+
+        .type-card.active .type-icon {
+            color: var(--accent);
+        }
+
+        .type-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .type-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Textarea styling */
+        .input-textarea {
+            width: 100%;
+            min-height: 140px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .input-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.15);
+        }
+
+        /* Action Buttons */
+        .btn-convert {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-convert:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Output Container Animation */
+        .output-container {
+            margin-top: 35px;
+            display: none;
+            animation: slideDownFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-copy-all {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--accent);
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-copy-all:hover {
+            background: rgba(0, 242, 254, 0.1);
+            border-color: var(--accent);
+        }
+
+        .btn-reset {
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-reset:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--danger);
+        }
+
+        /* Converted Item List styling */
+        .output-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 4px;
+            margin-bottom: 15px;
+        }
+
+        .output-item {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            animation: fadeInUp 0.3s ease forwards;
+        }
+
+        .link-text {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--success);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-grow: 1;
+        }
+
+        .btn-copy-single {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 6px;
+            font-size: 1rem;
+            transition: color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .btn-copy-single:hover {
+            color: var(--primary);
+        }
+
+        /* Modern Detailed Bio Section */
+        .bio-section {
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.05), transparent), var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 45px;
+            margin-bottom: 60px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .bio-grid {
+            display: flex;
+            gap: 35px;
+            align-items: flex-start;
+        }
+
+        .bio-image-side {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            flex-shrink: 0;
+        }
+
+        .bio-image-wrapper {
+            position: relative;
+        }
+
+        .bio-img {
+            width: 140px;
+            height: 140px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 2px solid var(--border);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: transform 0.4s ease;
+        }
+
+        .bio-image-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        .bio-grid:hover .bio-img {
+            transform: scale(1.04) rotate(2deg);
+        }
+
+        .bio-content {
+            flex-grow: 1;
+        }
+
+        .bio-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .developer-title {
+            font-size: 0.95rem;
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .bio-tag {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 50px;
+            color: var(--text-muted);
+        }
+
+        .bio-tag.highlight {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .bio-text {
+            font-size: 0.98rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 25px;
+            background: rgba(0,0,0,0.15);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.02);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        .contact-item i {
+            color: var(--primary);
+            width: 16px;
+        }
+
+        .social-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .social-link.fb:hover { background: #1877f2; border-color: #1877f2; }
+        .social-link.ig:hover { background: #e1306c; border-color: #e1306c; }
+        .social-link.li:hover { background: #0077b5; border-color: #0077b5; }
+        .social-link.yt:hover { background: #ff0000; border-color: #ff0000; }
+        .social-link.wa:hover { background: #25d366; border-color: #25d366; }
+
+        /* Elegant Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 30px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Universal Animations */
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDownFade {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design Adaptation */
+        @media (max-width: 768px) {
+            .hero-card { flex-direction: column; text-align: center; padding: 30px 20px; }
+            .animated-title { font-size: 2rem; }
+            .type-grid { grid-template-columns: 1fr; }
+            .bio-grid { flex-direction: column; align-items: center; text-align: center; }
+            .tag-container { justify-content: center; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .social-row { justify-content: center; }
+            .converter-section { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+
+    <div class="container">
+        
+        <section class="hero">
+            <div class="hero-card">
+                <div class="hero-img-wrapper">
+                    <img src="https://i.ibb.co.com/Fk4JD9yd/Profile.jpg" alt="MONOARUL Islam MURAD" class="hero-img">
+                </div>
+                <div class="hero-info">
+                    <h1 class="animated-title">Welcome to <br><span>Murad Drive Link Converter</span></h1>
+                    <p class="hero-subtitle">Transform your Google Drive file links into instant direct download or web-viewable embed links safely and seamlessly.</p>
+                    
+                    <div class="social-row">
+                        <a href="https://www.facebook.com/muradmonoarul/" target="_blank" class="social-link fb" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/murad.mp4/" target="_blank" class="social-link ig" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/in/monoarulmurad/" target="_blank" class="social-link li" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="https://www.youtube.com/@MuradMonoarul" target="_blank" class="social-link yt" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="https://wa.me/8801751120444" target="_blank" class="social-link wa" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <a href="#converter" class="scroll-down-btn">
+                <span>Get Started</span> <i class="fa-solid fa-arrow-down"></i>
+            </a>
+        </section>
+
+        <section class="converter-section" id="converter">
+            <form id="converterForm" onsubmit="handleConvert(event)">
+                
+                <div class="form-group">
+                    <label class="form-label">1. SELECT FILE TYPE</label>
+                    <div class="type-grid">
+                        <label class="type-card active" onclick="selectType(this)">
+                            <input type="radio" name="fileType" value="image" checked>
+                            <div class="type-icon"><i class="fa-solid fa-image"></i></div>
+                            <div class="type-info">
+                                <h4>Image File</h4>
+                                <p>Generates web view & embed display source URLs</p>
+                            </div>
+                        </label>
+                        <label class="type-card" onclick="selectType(this)">
+                            <input type="radio" name="fileType" value="any">
+                            <div class="type-icon"><i class="fa-solid fa-file-zipper"></i></div>
+                            <div class="type-info">
+                                <h4>Any Document / File</h4>
+                                <p>Generates raw downloadable links for users</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" id="inputLabel">2. PASTE GOOGLE DRIVE SHARED LINKS</label>
+                    <textarea class="input-textarea" id="linksInput" placeholder="Paste your links here...&#10;Supports comma separated links or one link per line automatically."></textarea>
+                </div>
+
+                <button type="submit" class="btn-convert">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Convert Links
+                </button>
+            </form>
+
+            <div class="output-container" id="outputContainer">
+                <div class="output-header">
+                    <label class="form-label">CONVERTED RESULTS</label>
+                    <div class="header-buttons">
+                        <button class="btn-copy-all" onclick="copyAllLinks()">
+                            <i class="fa-solid fa-copy"></i> Copy All
+                        </button>
+                        <button class="btn-reset" onclick="resetConverter()" title="Clear and Reset">
+                            <i class="fa-solid fa-rotate-left"></i> Reset
+                        </button>
+                    </div>
+                </div>
+                <div class="output-list" id="outputList">
+                    </div>
+            </div>
+        </section>
+
+        <section class="bio-section">
+            <div class="bio-grid">
+                <div class="bio-image-side">
+                    <div class="bio-image-wrapper">
+                        <img src="https://i.ibb.co.com/Fk4JD9yd/Profile.jpg" alt="MONOARUL Islam MURAD" class="bio-img">
+                    </div>
+                    <div class="social-row" style="margin-top: 5px;">
+                        <a href="https://www.facebook.com/muradmonoarul/" target="_blank" class="social-link fb"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/murad.mp4/" target="_blank" class="social-link ig"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/in/monoarulmurad/" target="_blank" class="social-link li"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="https://www.youtube.com/@MuradMonoarul" target="_blank" class="social-link yt"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="https://wa.me/8801751120444" target="_blank" class="social-link wa"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="bio-content">
+                    <h2 class="bio-name">MONOARUL Islam MURAD</h2>
+                    <div class="developer-title">Website Developer & Creator</div>
+                    <div class="tag-container">
+                        <span class="bio-tag highlight"><i class="fa-solid fa-microscope"></i> Researcher</span>
+                        <span class="bio-tag"><i class="fa-solid fa-code"></i> Web Developer</span>
+                        <span class="bio-tag"><i class="fa-solid fa-bolt"></i> Tech Enthusiast</span>
+                    </div>
+                    <p class="bio-text">
+                        Passionate about exploring complex human behavior, social structures, and building beautiful digital experiences. I aim to merge data, sociology, and modern design principles to help individuals lead healthier, more conscious, and fully optimized lives.
+                    </p>
+                    
+                    <div class="contact-grid">
+                        <div class="contact-item"><i class="fa-solid fa-envelope"></i> monoarulmurad@gmail.com</div>
+                        <div class="contact-item"><i class="fa-solid fa-phone"></i> +8801773350146</div>
+                        <div class="contact-item"><i class="fa-brands fa-whatsapp"></i> +8801751120444</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        A MURAD UNITED STUDIO creation
+    </footer>
+
+    <script>
+        // Custom UI Control for Cards state selection interaction
+        function selectType(element) {
+            document.querySelectorAll('.type-card').forEach(card => card.classList.remove('active'));
+            element.classList.add('active');
+            const radioBtn = element.querySelector('input[type="radio"]');
+            radioBtn.checked = true;
+        }
+
+        // Processing Logic core algorithms to avoid commas, spaces, line feed split
+        function handleConvert(event) {
+            event.preventDefault();
+            
+            const rawText = document.getElementById('linksInput').value;
+            const fileType = document.querySelector('input[name="fileType"]:checked').value;
+            const outputContainer = document.getElementById('outputContainer');
+            const outputList = document.getElementById('outputList');
+            
+            outputList.innerHTML = ''; // Reset UI panel view
+            
+            if(!rawText.trim()){
+                alert("Please paste at least one valid Google Drive sharing URL.");
+                return;
+            }
+
+            // Normalization step - Split text block based on rows or explicit commas safely
+            // Replace commas with newlines, then split by lines
+            const normalizedText = rawText.replace(/,/g, '\n');
+            const lines = normalizedText.split('\n');
+            
+            let linksArray = [];
+            lines.forEach(item => {
+                let cleanStr = item.trim();
+                if(cleanStr) {
+                    linksArray.push(cleanStr);
+                }
+            });
+
+            let validCount = 0;
+
+            linksArray.forEach((link, index) => {
+                let fileId = extractDriveId(link);
+                
+                if (fileId) {
+                    validCount++;
+                    let generatedUrl = '';
+                    
+                    if(fileType === 'image') {
+                        generatedUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
+                    } else {
+                        generatedUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+                    }
+
+                    // Create item container layout row
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'output-item';
+                    itemDiv.style.animationDelay = `${index * 0.05}s`;
+                    
+                    itemDiv.innerHTML = `
+                        <span class="link-text" id="link-${index}">${generatedUrl}</span>
+                        <button type="button" class="btn-copy-single" onclick="copyIndividualText('link-${index}', this)" title="Copy Individual Link">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    `;
+                    outputList.appendChild(itemDiv);
+                }
+            });
+
+            if(validCount > 0) {
+                outputContainer.style.display = 'block';
+                // Automatically scroll into converted list viewing section
+                outputContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                alert("Could not extract any valid Google Drive IDs. Please check your URLs input structure.");
+                outputContainer.style.display = 'none';
+            }
+        }
+
+        // Regex parsing handler for versatile link configurations
+        function extractDriveId(url) {
+            const regexPatterns = [
+                /\/file\/d\/([a-zA-Z0-9_-]{25,})/,  // standard view url file formats
+                /id=([a-zA-Z0-9_-]{25,})/,         // explicit query URL settings query parameters
+                /\/d\/([a-zA-Z0-9_-]{25,})/          // alternative shortened drive variations structures
+            ];
+
+            for (let regex of regexPatterns) {
+                let match = url.match(regex);
+                if (match && match) {
+                    return match;
+                }
+            }
+            return null;
+        }
+
+        // Functional individual element text copier function
+        function copyIndividualText(elementId, buttonElement) {
+            const textToCopy = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const icon = buttonElement.querySelector('i');
+                icon.className = 'fa-solid fa-check';
+                icon.style.color = 'var(--success)';
+                setTimeout(() => {
+                    icon.className = 'fa-regular fa-copy';
+                    icon.style.color = '';
+                }, 2000);
+            });
+        }
+
+        // Functional global multi text row copier block function
+        function copyAllLinks() {
+            const links = document.querySelectorAll('.link-text');
+            let combinedText = '';
+            links.forEach(el => {
+                combinedText += el.innerText + '\n';
+            });
+
+            if(combinedText) {
+                navigator.clipboard.writeText(combinedText.trim()).then(() => {
+                    const btn = document.querySelector('.btn-copy-all');
+                    const originalHtml = btn.innerHTML;
+                    btn.innerHTML = `<i class="fa-solid fa-check"></i> All Copied!`;
+                    btn.style.color = 'var(--success)';
+                    setTimeout(() => {
+                        btn.innerHTML = originalHtml;
+                        btn.style.color = '';
+                    }, 2500);
+                });
+            }
+        }
+
+        // Reset App functionality
+        function resetConverter() {
+            document.getElementById('linksInput').value = '';
+            const outputContainer = document.getElementById('outputContainer');
+            const outputList = document.getElementById('outputList');
+            outputList.innerHTML = '';
+            outputContainer.style.display = 'none';
+            document.getElementById('converter').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+</body>
+</html>
